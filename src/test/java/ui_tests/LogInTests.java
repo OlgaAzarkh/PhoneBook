@@ -1,33 +1,48 @@
 package ui_tests;
 
+import dto.User;
 import manager.ApplicationManager;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.ContactsPage;
 import pages.HomePage;
 import pages.LogInPage;
-
-import static org.testng.Assert.assertTrue;
-
+import utils.RandomUtils;
 
 public class LogInTests extends ApplicationManager {
-    private static final String EMAIL = "new11@testperest55.rr";
-    private static final String PASSWORD = "Test777@";
     @Test
-    public void registerPositiveTest() {
-            HomePage homePage = new HomePage(getDriver());
-            homePage.clickBtnLoginInHeader();
-            LogInPage loginPage = new LogInPage(getDriver());
-            loginPage.fillEmailForm(EMAIL, PASSWORD);
-            loginPage.clickRegistrationButton();
-            assertTrue(loginPage.isNoContactsMessageVisible(), "'No Contacts here!' message should be visible");
-        }
-
-        @Test
-        public void loginPositiveTest () {
-            HomePage homePage = new HomePage(getDriver());
-            homePage.clickBtnLoginInHeader();
-            LogInPage loginPage = new LogInPage(getDriver());
-            loginPage.fillEmailForm(EMAIL, PASSWORD);
-            loginPage.clickButtonLogIn();
-        }
+    public void loginPositiveTest() {
+        User user = new User("trtr@fjjf.ff", "Test789#");
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickBtnLoginInHeader();
+        LogInPage loginPage = new LogInPage(getDriver());
+        loginPage.typeLoginForm(user);
+        loginPage.clickButtonLogIn();
+        ContactsPage contactsPage = new ContactsPage(getDriver());
+        Assert.assertTrue(contactsPage.isContactsPresent());
     }
 
+    @Test
+    public void loginNegativeTestWrongPassword() {
+        User user = new User("trtr@fjjf.f", "@@@@@");
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickBtnLoginInHeader();
+        LogInPage loginPage = new LogInPage(getDriver());
+        loginPage.typeLoginForm(user);
+        loginPage.clickButtonLogIn();
+        loginPage.closeAlert();
+        Assert.assertTrue(loginPage.isErrorMessagePresent("Login Failed with code 401"));
+    }
+
+    @Test
+    public void loginNegativeTestWrongEmail() {
+        User user = new User("trtr@fjjf.ff", "Test789@");
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickBtnLoginInHeader();
+        LogInPage loginPage = new LogInPage(getDriver());
+        loginPage.typeLoginForm(user);
+        loginPage.clickButtonLogIn();
+        loginPage.closeAlert();
+        Assert.assertTrue(loginPage.isErrorMessagePresent("Login Failed with code 401"));
+    }
+}
