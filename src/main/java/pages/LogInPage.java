@@ -26,11 +26,6 @@ public class LogInPage extends BasePage {
     @FindBy(xpath = "//input[@name='password']")
     WebElement inputPassword;
 
-    public void fillEmailForm(String email, String password) {
-        inputEmail.sendKeys(email);
-        inputPassword.sendKeys(password);
-    }
-
     @FindBy(xpath = "//button[@name='login']")
     WebElement buttonLogin;
 
@@ -38,10 +33,12 @@ public class LogInPage extends BasePage {
     WebElement btnSignOutInHeader;
 
     public void clickButtonLogIn() {
+        logger.info("Click btn log in " +  buttonLogin.getTagName());
         buttonLogin.click();
     }
 
     public void typeLoginForm(User user) {
+        logger.info("Type log in form with data: " + user.toString());
         inputEmail.sendKeys(user.getUsername());
         inputPassword.sendKeys(user.getPassword());
     }

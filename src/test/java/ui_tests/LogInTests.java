@@ -7,12 +7,15 @@ import org.testng.annotations.Test;
 import pages.ContactsPage;
 import pages.HomePage;
 import pages.LogInPage;
-import utils.RandomUtils;
+
+import java.lang.reflect.Method;
 
 public class LogInTests extends ApplicationManager {
     @Test
-    public void loginPositiveTest() {
+    public void loginPositiveTest(Method method) {
+        logger.info("Start method " + method.getName());
         User user = new User("trtr@fjjf.ff", "Test789#");
+        logger.info("Test data -> " + user.toString());
         HomePage homePage = new HomePage(getDriver());
         homePage.clickBtnLoginInHeader();
         LogInPage loginPage = new LogInPage(getDriver());

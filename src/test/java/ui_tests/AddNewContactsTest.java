@@ -1,5 +1,6 @@
 package ui_tests;
 
+import data_provider.ContactDP;
 import dto.Contact;
 import dto.User;
 import manager.ApplicationManager;
@@ -15,6 +16,7 @@ public class AddNewContactsTest extends ApplicationManager {
     LogInPage logInPage;
     ContactsPage contactsPage;
     AddContactsPage addContactsPage;
+    String existPhone;
     int sizeBeforeAdding;
 
     @BeforeMethod
@@ -26,6 +28,7 @@ public class AddNewContactsTest extends ApplicationManager {
         logInPage.clickButtonLogIn();
         contactsPage = new ContactsPage(driver);
         sizeBeforeAdding = contactsPage.getContactsListSizeUseFindElement();
+        existPhone = contactsPage.getPhoneFromList();
         addContactsPage = BasePage.clickButtonsOnHeader(HeaderMenuItemEnum.ADD);
     }
 
@@ -71,8 +74,82 @@ public class AddNewContactsTest extends ApplicationManager {
         addContactsPage.fillContactForm(contact);
         int sizeAfterAdd = contactsPage.getContactsListSizeUseFindElement();
         System.out.println(sizeBeforeAdding + " vs " + sizeAfterAdd);
-        Assert.assertEquals(sizeBeforeAdding + 1, sizeAfterAdd);
+        Assert.assertEquals(sizeBeforeAdding, sizeAfterAdd);
     }
 
+    @Test(dataProvider = "addNewContactDP", dataProviderClass = ContactDP.class)
+    public void addNewCarPositiveTestDataProvider(Contact contact) {
+        addContactsPage.fillContactForm(contact);
+        Assert.assertTrue(contactsPage.validateContactNamePhone(contact.getName(), contact.getPhone()));
+    }
 
+    @Test(invocationCount = 1)
+    public void addNewContactNegativeTestEmptyName() {
+        Contact contact = Contact.builder()
+                .name("")
+                .lastName(RandomUtils.generateString(10))
+                .phone(RandomUtils.generatePhone(10))
+                .email(RandomUtils.generateEmail(6))
+                .address(RandomUtils.generateString(20))
+                .description("desc " + RandomUtils.generateString(6))
+                .build();
+        addContactsPage.fillContactForm(contact);
+        Assert.assertTrue(addContactsPage.validateUrl("add"));
+    }
+
+    @Test(invocationCount = 1)
+    public void addNewContactNegativeTestEmptyLastName() {
+        Contact contact = Contact.builder()
+                .name(RandomUtils.generateString(10))
+                .lastName("")
+                .phone(RandomUtils.generatePhone(10))
+                .email(RandomUtils.generateEmail(6))
+                .address(RandomUtils.generateString(20))
+                .description("desc " + RandomUtils.generateString(6))
+                .build();
+        addContactsPage.fillContactForm(contact);
+        Assert.assertTrue(addContactsPage.urlDoesNotContain("contacts"));
+    }
+
+    @Test(invocationCount = 1)
+    public void addNewContactNegativeTestEmptyPhone() {
+        Contact contact = Contact.builder()
+                .name(RandomUtils.generateString(5))
+                .lastName(RandomUtils.generateString(5))
+                .phone("")
+                .email(RandomUtils.generateEmail(6))
+                .address(RandomUtils.generateString(20))
+                .description("desc " + RandomUtils.generateString(6))
+                .build();
+        addContactsPage.fillContactForm(contact);
+        Assert.assertEquals(" Phone not valid: Phone number must contain only digits! And length min 10, max 15!", addContactsPage.closeAlertAndReturnText());
+    }
+
+    @Test(invocationCount = 1)
+    public void addNewContactNegativeTestEmptyEmail() {
+        Contact contact = Contact.builder()
+                .name(RandomUtils.generateString(10))
+                .lastName(RandomUtils.generateString(17))
+                .phone(RandomUtils.generatePhone(10))
+                .email("")
+                .address(RandomUtils.generateString(20))
+                .description("desc " + RandomUtils.generateString(6))
+                .build();
+        addContactsPage.fillContactForm(contact);
+        Assert.assertTrue(addContactsPage.urlDoesNotContain("contacts"));
+    }
+
+    @Test(invocationCount = 1)
+    public void addNewContactNegativeTestExistingPhone() {
+        Contact contact = Contact.builder()
+                .name(RandomUtils.generateString(10))
+                .lastName(RandomUtils.generateString(17))
+                .phone(existPhone)
+                .email(RandomUtils.generateEmail(7))
+                .address(RandomUtils.generateString(20))
+                .description("desc " + RandomUtils.generateString(6))
+                .build();
+        addContactsPage.fillContactForm(contact);
+        Assert.assertTrue(addContactsPage.urlDoesNotContain("contacts"));
+    }
 }

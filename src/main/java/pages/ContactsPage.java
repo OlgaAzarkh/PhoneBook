@@ -30,7 +30,9 @@ public class ContactsPage extends BasePage {
     }
 
     public Integer getContactsListSizeUseFindElement() {
-        List <WebElement> listContactsFindElement = driver.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
+        pause(15);
+        List <WebElement> listContactsFindElement = driver.findElements(
+                By.xpath("//div[@class='contact-item_card__2SOIM']"));
         return listContactsFindElement.size();
     }
 
@@ -42,4 +44,12 @@ public class ContactsPage extends BasePage {
         return false;
     }
 
+    public String getPhoneFromList() {
+        if(!contactsList.isEmpty()) {
+            System.out.println(contactsList.get(0).getText().split("\n")[1]);
+            return contactsList.get(0).getText().split("\n")[1];
+        }
+        System.out.println("contact list is empty");
+        return null;
+    }
 }
