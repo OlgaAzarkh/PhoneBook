@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import pages.*;
 import utils.HeaderMenuItemEnum;
 import utils.RandomUtils;
+import static utils.PropertiesReader.*;
 
 public class AddNewContactsTest extends ApplicationManager {
     HomePage homePage;
@@ -21,7 +22,8 @@ public class AddNewContactsTest extends ApplicationManager {
 
     @BeforeMethod
     public void login() {
-        User user = new User("trtr@fjjf.ff", "Test789#");
+        User user = new User(getProperty("login.properties","email"),
+                getProperty("login.properties","password"));
         homePage = new HomePage(driver);
         logInPage = BasePage.clickButtonsOnHeader(HeaderMenuItemEnum.LOGIN);
         logInPage.typeLoginForm(user);

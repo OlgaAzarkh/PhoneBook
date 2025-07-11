@@ -9,6 +9,7 @@ import pages.ContactsPage;
 import pages.HomePage;
 import pages.LogInPage;
 import utils.RandomUtils;
+import utils.RetryAnalyzer;
 
 public class RegistrationTests extends ApplicationManager {
     HomePage homePage;
@@ -21,9 +22,9 @@ public class RegistrationTests extends ApplicationManager {
         loginPage = new LogInPage(getDriver());
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void registrationPositiveTest() {
-        User user = new User (RandomUtils.generateEmail(4), "Test789#");
+        User user = new User (RandomUtils.generateEmail(4), "Test789!");
         goToRegistrationPage();
         loginPage.typeLoginForm(user);
         loginPage.clickRegistrationButton();
