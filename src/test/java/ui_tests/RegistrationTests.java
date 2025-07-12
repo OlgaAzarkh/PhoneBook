@@ -43,11 +43,11 @@ public class RegistrationTests extends ApplicationManager {
 
     @Test
     public void registrationNegativeTestDuplicatedUser() {
-        User user = new User (RandomUtils.generateEmail(4), "Test789#");
+        User user = new User(RandomUtils.generateEmail(4), "Test789#");
         goToRegistrationPage();
         loginPage.typeLoginForm(user);
         loginPage.clickRegistrationButton();
-        if(loginPage.isNoContactMessagePresent("Add new by clicking on Add in NavBar!")) {
+        if (loginPage.isNoContactMessagePresent("Add new by clicking on Add in NavBar!")) {
             loginPage.logOut();
             loginPage.typeLoginForm(user);
             loginPage.clickRegistrationButton();

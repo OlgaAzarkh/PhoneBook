@@ -11,7 +11,7 @@ import utils.BaseAPI;
 
 import java.time.LocalDate;
 
-public class LoginTestRest extends AuthenticationController implements BaseAPI {
+public class LoginTest extends AuthenticationController implements BaseAPI {
 
     SoftAssert softAssert = new SoftAssert();
 

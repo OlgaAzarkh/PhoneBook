@@ -30,7 +30,7 @@ public class ApplicationManager {
     @AfterMethod
     public void tearDown() {
         logger.info("Stop test");
-        if(driver != null)
+        if (driver != null)
             driver.quit();
     }
 }
