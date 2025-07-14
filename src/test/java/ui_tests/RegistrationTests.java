@@ -22,7 +22,7 @@ public class RegistrationTests extends ApplicationManager {
         loginPage = new LogInPage(getDriver());
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = "smoke")
     public void registrationPositiveTest() {
         User user = new User (RandomUtils.generateEmail(4), "Test789!");
         goToRegistrationPage();

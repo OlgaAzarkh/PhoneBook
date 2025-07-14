@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import pages.*;
 import utils.HeaderMenuItemEnum;
 import utils.RandomUtils;
+import utils.RetryAnalyzer;
 
 import static utils.PropertiesReader.getProperty;
 
@@ -56,7 +57,6 @@ public class AddNewContactsTestsApi extends ApplicationManager {
             if (contact1.equals(contact)) {
                 System.out.println(contact1);
             System.out.println(contact);
-            //Assert.assertEquals(contact1, contact);
         }
 
         }

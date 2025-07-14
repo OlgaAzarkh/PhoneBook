@@ -19,7 +19,7 @@ public class ApplicationManager {
         return driver;
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         logger.info("start testing " + LocalDate.now());
         driver = new ChromeDriver();
@@ -27,7 +27,7 @@ public class ApplicationManager {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
     }
 
-    @AfterMethod
+    @AfterMethod(enabled = true, alwaysRun = true)
     public void tearDown() {
         logger.info("Stop test");
         if (driver != null)

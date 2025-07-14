@@ -20,7 +20,7 @@ public class AddNewContactsTest extends ApplicationManager {
     String existPhone;
     int sizeBeforeAdding;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void login() {
         User user = new User(getProperty("login.properties","email"),
                 getProperty("login.properties","password"));
@@ -34,7 +34,7 @@ public class AddNewContactsTest extends ApplicationManager {
         addContactsPage = BasePage.clickButtonsOnHeader(HeaderMenuItemEnum.ADD);
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void addNewContactPositiveTest() {
         Contact contact = Contact.builder()
                 .name(RandomUtils.generateString(5))
